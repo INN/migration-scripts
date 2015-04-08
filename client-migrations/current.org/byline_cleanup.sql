@@ -25,10 +25,10 @@
 -- SAVE --
 
 -- Prep
+update wp_53_postmeta set meta_value = trim(meta_value) where meta_key = 'largo_byline_text';
 update wp_53_postmeta set meta_value = 'Benjamin Mook' where meta_value = 'Ben Mook' and meta_key = 'largo_byline_text';
 update wp_53_postmeta set meta_value = 'Erica Sanchez' where meta_value = 'Erica Sánchez-Vázquez' and meta_key = 'largo_byline_text';
 update wp_53_postmeta set meta_value = 'Karen Everhart' where meta_value = 'Karen Everhart Bedford' and meta_key = 'largo_byline_text';
-update wp_53_postmeta set meta_value = trim(meta_value) where meta_key = 'largo_byline_text';
 
 -- Get down 2 bizness
 -- Create a temporary table with largo_byline_text and ID for user record with matching display name
@@ -68,3 +68,6 @@ delete wp_53_postmeta from wp_53_postmeta
   inner join largo_byline_post_id_map
   on wp_53_postmeta.meta_value = largo_byline_post_id_map.meta_value
   where wp_53_postmeta.meta_key = 'largo_byline_text';
+
+drop temporary table if exists largo_byline_texts_users;
+drop temporary table if exists largo_byline_post_id_map;
