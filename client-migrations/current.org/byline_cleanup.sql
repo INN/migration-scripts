@@ -8,10 +8,10 @@
   -- where wp_53_postmeta.meta_key = 'largo_byline_text'
   -- and wp_53_posts.post_type = 'post'
   -- and wp_53_posts.post_status = 'publish'
-  -- and meta_value != display_name;
+  -- and (wp_53_postmeta.meta_value != display_name or display_name is null);
 
 -- Shows largo_byline_text with no matching user record as well as post count for each largo_byline_text
--- select meta_value, count(meta_value) as meta_count from wp_53_posts
+-- select meta_value as byline, count(meta_value) as post_count from wp_53_posts
   -- left join wp_53_postmeta
   -- on wp_53_posts.ID = wp_53_postmeta.post_id
   -- left join wp_users
@@ -19,16 +19,13 @@
   -- where wp_53_postmeta.meta_key = 'largo_byline_text'
   -- and wp_53_posts.post_type = 'post'
   -- and wp_53_posts.post_status = 'publish'
-  -- and meta_value != display_name
-  -- group by meta_value
-  -- order by meta_count DESC;
+  -- and (wp_53_postmeta.meta_value != display_name or display_name is null)
+  -- group by byline
+  -- order by post_count DESC;
 -- SAVE --
 
 -- Prep
 update wp_53_postmeta set meta_value = trim(meta_value) where meta_key = 'largo_byline_text';
-update wp_53_postmeta set meta_value = 'Benjamin Mook' where meta_value = 'Ben Mook' and meta_key = 'largo_byline_text';
-update wp_53_postmeta set meta_value = 'Erica Sanchez' where meta_value = 'Erica Sánchez-Vázquez' and meta_key = 'largo_byline_text';
-update wp_53_postmeta set meta_value = 'Karen Everhart' where meta_value = 'Karen Everhart Bedford' and meta_key = 'largo_byline_text';
 
 -- Get down 2 bizness
 -- Create a temporary table with largo_byline_text and ID for user record with matching display name
@@ -55,7 +52,7 @@ create temporary table if not exists largo_byline_post_id_map select wp_53_postm
   where wp_53_postmeta.meta_key = 'largo_byline_text'
   and wp_53_posts.post_type = 'post'
   and wp_53_posts.post_status = 'publish'
-  and wp_53_postmeta.meta_value != display_name;
+  and (wp_53_postmeta.meta_value != display_name or display_name is null);
 
 -- Update the posts table, setting the value of post_author to the user ID associated with the largo_byline_text
 update wp_53_posts
@@ -68,6 +65,3 @@ delete wp_53_postmeta from wp_53_postmeta
   inner join largo_byline_post_id_map
   on wp_53_postmeta.meta_value = largo_byline_post_id_map.meta_value
   where wp_53_postmeta.meta_key = 'largo_byline_text';
-
-drop temporary table if exists largo_byline_texts_users;
-drop temporary table if exists largo_byline_post_id_map;
