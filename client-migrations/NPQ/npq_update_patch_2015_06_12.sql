@@ -31,6 +31,7 @@ UPDATE wp_posts SET ID = ID + @newPostID;
 -- select max(comment_ID) from wp_56_comments;
 SET @newCommentID = 12413 + 100;
 UPDATE wp_comments SET comment_ID = comment_ID + @newCommentID;
+UPDATE wp_comments SET comment_post_ID = comment_post_ID + @newPostID;
 
 -- NOTE: SET COMMENT META ID
 -- select max(meta_id) from wp_56_commentmeta;
