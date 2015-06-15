@@ -22,39 +22,47 @@ SET @newBlogID = 56;
 SET @newPostID = 34797 + 100;
 UPDATE wp_posts SET ID = ID + @newPostID;
 
--- NOTE: SET POST META ID
--- select max(meta_id) from wp_56_postmeta;
--- SET @newPostMetaID = 41277 + 100;
--- UPDATE wp_postmeta SET meta_id = meta_id + @newPostMetaID;
-
 -- NOTE: SET COMMENT ID
 -- select max(comment_ID) from wp_56_comments;
 SET @newCommentID = 12413 + 100;
 UPDATE wp_comments SET comment_ID = comment_ID + @newCommentID;
 UPDATE wp_comments SET comment_post_ID = comment_post_ID + @newPostID;
 
--- NOTE: SET COMMENT META ID
--- select max(meta_id) from wp_56_commentmeta;
--- SET @newCommentMetaID = 0 + 100;
--- UPDATE wp_commentmeta SET meta_id = meta_id + @newCommentMetaID;
+-- NOTE: Update object_id where object_id matches an ID in posts table
+UPDATE wp_term_relationships a INNER JOIN wp_posts b
+  ON b.ID = (a.object_id + @newPostID)
+  SET a.object_id = (a.object_id + @newPostID);
 
+-- NOTE: Delete records from wp_56_term_relationships that do not have a match in wp_56_posts
+-- Helps avoid duplicate key errors when importing.
+DELETE a.* FROM wp_term_relationships a
+  LEFT OUTER JOIN wp_posts b
+  ON b.ID = a.object_id WHERE b.ID IS NULL;
 
--- We don't need to mess with the term tables apparently
-
--- NOTE: SET TERM REL ID
--- select max(object_id) from wp_56_term_relationships;
--- SET @newTermRelObjID = 34373 + 100;
--- UPDATE wp_term_relationships SET object_id = object_id + @newTermRelObjID;
+-- Delete records for posts they've added tags to since the post migration was imported.
+DELETE FROM wp_56_term_relationships WHERE object_id in (61201,
+61199,
+61198,
+61196,
+61195,
+61193,
+60888,
+60882,
+60754,
+60687,
+60641);
 
 -- NOTE: SET TERM TAX ID
 -- select max(term_taxonomy_id) from wp_56_term_taxonomy;
--- SET @newTermTaxID = 14920 + 100;
--- UPDATE wp_term_taxonomy SET term_taxonomy_id = term_taxonomy_id + @newTermTaxID;
+SET @newTermTaxID = 14920 + 100;
+UPDATE wp_term_taxonomy SET term_taxonomy_id = term_taxonomy_id + @newTermTaxID order by term_taxonomy_id desc;
+UPDATE wp_term_relationships SET term_taxonomy_id = term_taxonomy_id + @newTermTaxID order by term_taxonomy_id desc;
 
 -- NOTE: SET TERM ID
 -- select max(term_id) from wp_56_terms;
--- SET @newTermID = 48143 + 100;
--- UPDATE wp_terms SET term_id = term_id + @newTermID;
+SET @newTermID = 48143 + 100;
+UPDATE wp_terms SET term_id = term_id + @newTermID order by term_id desc;
+UPDATE wp_term_taxonomy set term_id = term_id + @newTermID order by term_id desc;
 
 
 -- DON'T CHANGE STUFF BELOW THIS LINE ---
@@ -142,11 +150,11 @@ DEALLOCATE PREPARE commentAuthorStatement;
 -- Find the users that are not authors, editors or admins
 -- and store their ID's in a temporary table. We'll delete
 -- these user records.
-drop temporary table if exists npq_delete_these_users;
-create temporary table if not exists npq_delete_these_users
-    select ID from wp_users join wp_usermeta on ID = user_id
-    where meta_key = CONCAT('wp_', @newBlogID, '_capabilities')
-    and not (
+DROP temporary TABLE IF EXISTS npq_delete_these_users;
+CREATE TEMPORARY TABLE IF NOT EXISTS npq_delete_these_users
+    SELECT ID FROM wp_users JOIN wp_usermeta ON ID = user_id
+    WHERE meta_key = CONCAT('wp_', @newBlogID, '_capabilities')
+    AND NOT (
         meta_value LIKE "%author%"
         OR meta_value LIKE "%editor%"
         OR meta_value LIKE "%administrator%"
