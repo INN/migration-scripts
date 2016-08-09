@@ -50,3 +50,5 @@ You're doing this on WPEngine.
 	4. In the table wp_options, replace the site URL and home URL with the enw correct values.
 9. Delete the vagrant database
 	1. `fab vagrant.destroy_db:migration`
+
+None of the above will update the site's media URL. The upload directory set in Dashboard > Settings > Media will still point to the multisite-appropriate directory. You're going to need to change that to point at wherever you move uploaded assets to on the new server, and you may need to edit links in stories and in theme options to make sure that images display correctly.
