@@ -31,7 +31,7 @@ You're doing this on WPEngine.
 	- add lines for any numbered tables exported that are not in the database.
 	- save the script someplace where you know where it is.
 6. Run the script.
-	1. Gonna do this in Sequel Pro because that's what's expedient at the moment
+	1. Sequel Pro isn't necessary to run this script, so use whatever tool works for you.
 	2. Open Sequel Pro and choose the server option for your vagrant machine
 	3. From the drop-down, choose `migration`, the DB we're doing all this in
 	4. Copy the script with `cat prepare_for_export.sql | pbcopy`
@@ -42,7 +42,7 @@ You're doing this on WPEngine.
 	9. Does everything look like a single-site instance? Everything runs with honor? Good!
 7. Export the database.
 	1. `fab vagrant.dump_db:/tmp/migration.sql,migration`
-8. Create a new WPengine install for the new site
+8. Create a new WPEngine install for the new site
 8. Upload the exported post-migration database to your new site
 	1. Find the phpMyAdmin page for your new site
 	2. on the "Import" tab, choose the database.
