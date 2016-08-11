@@ -44,7 +44,7 @@ This will install mysql-client (required by this script and not included in VVV 
 
 5. You should now have 2 files in the directory you ran `dump_tables.sh` from: `[DB Name]_blog_tables.sql` and `[DB Name]_network_tables.sql`, where `[DB Name]` is the name of the database you exported from. Import these files into your WordPress multisite install, and you're all done!
 
-# What if I imported want to undo it?
+# What if I imported my blog and now I want to undo/remove it?
 
 1. Delete the blog tables with a naming structure of `wp_#_`, where `#` is the blog number you assigned.
 2. Make a copy of `delete_blog_users.sql` and edit the file to update the variable `@newBlogID` at the top of the file, replacing `TKTK` with the blog # (same number as in step 1).
