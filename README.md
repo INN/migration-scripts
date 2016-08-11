@@ -4,7 +4,7 @@ Tools for migrating a single WordPress site into an existing WordPress multisite
 
 # What Do These Scripts Do?
 
-1. `prepare_standaline.sql` will help prevent data collisions during the migration process.
+1. `prepare_standalone.sql` will help prevent data collisions during the migration process.
 
 If your single WordPress site has 20 users (using user IDs 1-20), and your multisite  has 20 users (also using IDs 1-20), then you'll need to change your single site to use IDs 21-40 before importing.  
 
