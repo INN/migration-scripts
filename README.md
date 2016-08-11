@@ -13,9 +13,9 @@ If your single WordPress site has 20 users (using user IDs 1-20), and your multi
 # How to use these files
 
 1. Look at your multisite install's database.
-- What is the highest blog id? _(You'll see the blog ID listed in the table names like `wp_2_posts`)_
-- What is the highest user id? _(View the `wp_users` table and sort the ID column descending)_
-- What is the highest usermeta id? _(View the `wp_usermeta` table and sort the `umeta_id` column descending)_
+--* What is the highest blog id? _(You'll see the blog ID listed in the table names like `wp_2_posts`)_
+--* What is the highest user id? _(View the `wp_users` table and sort the ID column descending)_
+--* What is the highest usermeta id? _(View the `wp_usermeta` table and sort the `umeta_id` column descending)_
 
 2. Make a copy of `prepare_standalone.sql` and edit the file to update the variables at the top of the file.
 
