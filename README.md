@@ -13,13 +13,14 @@ If your single WordPress site has 20 users (using user IDs 1-20), and your multi
 # How to use these files
 
 1. Look at your multisite install's database.
---* What is the highest blog id? _(You'll see the blog ID listed in the table names like `wp_2_posts`)_
---* What is the highest user id? _(View the `wp_users` table and sort the ID column descending)_
---* What is the highest usermeta id? _(View the `wp_usermeta` table and sort the `umeta_id` column descending)_
+
+  * What is the highest blog id? _(You'll see the blog ID listed in the table names like `wp_2_posts`)_
+  * What is the highest user id? _(View the `wp_users` table and sort the ID column descending)_
+  * What is the highest usermeta id? _(View the `wp_usermeta` table and sort the `umeta_id` column descending)_
 
 2. Make a copy of `prepare_standalone.sql` and edit the file to update the variables at the top of the file.
 
-```
+  ```
 SET @newUmetaID = Set Here;     // The highest usermeta id from above + 1
 SET @newUserID = Set Here;      // The highest user id from above + 1
 SET @newBlogID = Set Here;      // The highest blog id from above + 1 
@@ -29,18 +30,18 @@ SET @newBlogID = Set Here;      // The highest blog id from above + 1
 
 4. Dump the blog tables (tables with a naming structure of wp_#_) and network tables (all other tables - `wp_termmeta`, `wp_usermeta`, `wp_users`) to separate files.
 
-You can do this manually or use the included shell script [dump_tables.sh](dump_tables.sh) with the name of your local database where you loaded the blog's data. For instance, you could run `./dump_tables.sh wordpress` if the database were named `wordpress`. Run the script without any arguments for help.
+  You can do this manually or use the included shell script [dump_tables.sh](dump_tables.sh) with the name of your local database where you loaded the blog's data. For instance, you could run `./dump_tables.sh wordpress` if the database were named `wordpress`. Run the script without any arguments for help.
 
-* If you're running VVV locally and want to use the `dump_tables.sh` script, ssh into your vagrant box and run the following commands:
+  * If you're running VVV locally and want to use the `dump_tables.sh` script, ssh into your vagrant box and run the following commands:
 
-```
+  ```
 sudo apt-get install mysql-client
 git clone https://github.com/INN/migration-scripts.git
 cd migration-scripts/
 ./dump_tables.sh
 ```
 
-This will install mysql-client (required by this script and not included in VVV by default), clone this repository, and run `dump_tables.sh`.
+  This will install mysql-client (required by this script and not included in VVV by default), clone this repository, and run `dump_tables.sh`.
 
 5. You should now have 2 files in the directory you ran `dump_tables.sh` from: `[DB Name]_blog_tables.sql` and `[DB Name]_network_tables.sql`, where `[DB Name]` is the name of the database you exported from. Import these files into your WordPress multisite install, and you're all done!
 
