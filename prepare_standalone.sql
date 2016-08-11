@@ -64,6 +64,11 @@ PREPARE renameTablesStatement FROM @renameTablesStatement;
 EXECUTE renameTablesStatement;
 DEALLOCATE PREPARE renameTablesStatement;
 
+SET @renameTablesStatement = CONCAT('RENAME TABLE wp_termmeta TO wp_', @newBlogID, '_termmeta;');
+PREPARE renameTablesStatement FROM @renameTablesStatement;
+EXECUTE renameTablesStatement;
+DEALLOCATE PREPARE renameTablesStatement;
+
  -- Add two columns to the end of the wp_users table, spam and deleted. Both are TINYINT(2).
 ALTER TABLE wp_users ADD spam tinyint(2) default 0;
 ALTER TABLE wp_users ADD deleted tinyint(2) default 0;
