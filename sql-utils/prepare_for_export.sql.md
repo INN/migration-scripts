@@ -40,15 +40,20 @@ You're doing this on WPEngine.
 	7. Run all lines (Mac: Command-r)
 	8. In the menus, Database > Refresh tables
 	9. Does everything look like a single-site instance? Everything runs with honor? Good!
-7. Export the database.
+7. Perform whatever other additional find-and-replaces need to be done
+	- for example:
+		- replace `largo-dev` with `largo`
+		- replace `example.org/files/` with `example.org/wp-content/uploads`
+		- replace `example.wpengine.com` with `example.org`
+8. Export the database.
 	1. `fab vagrant.dump_db:/tmp/migration.sql,migration`
-8. Create a new WPEngine install for the new site
-8. Upload the exported post-migration database to your new site
+9. Create a new WPEngine install for the new site
+10. Upload the exported post-migration database to your new site
 	1. Find the phpMyAdmin page for your new site
 	2. On the "Import" tab, choose the database.
 	3. Proceed to upload the thing. This only works for files less than 500MB in size.
 	4. In the table wp_options, replace the site URL and home URL with the enw correct values.
-9. Delete the vagrant database
+11. Delete the vagrant database
 	1. `fab vagrant.destroy_db:migration`
 
 None of the above will update the site's media URL. The upload directory set in Dashboard > Settings > Media will still point to the multisite-appropriate directory. You're going to need to change that to point at wherever you move uploaded assets to on the new server, and you may need to edit links in stories and in theme options to make sure that images display correctly.
