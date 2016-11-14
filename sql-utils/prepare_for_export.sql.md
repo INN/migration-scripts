@@ -52,3 +52,7 @@ You're doing this on WPEngine.
 	1. `fab vagrant.destroy_db:migration`
 
 None of the above will update the site's media URL. The upload directory set in Dashboard > Settings > Media will still point to the multisite-appropriate directory. You're going to need to change that to point at wherever you move uploaded assets to on the new server, and you may need to edit links in stories and in theme options to make sure that images display correctly.
+
+You may also be interested in:
+
+- https://github.com/INN/docs/blob/master/projects/largo/make-site-live.md
