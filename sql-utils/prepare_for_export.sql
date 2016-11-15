@@ -57,6 +57,11 @@ PREPARE renameTablesStatement FROM @renameTablesStatement;
 EXECUTE renameTablesStatement;
 DEALLOCATE PREPARE renameTablesStatement;
 
+SET @renameTablesStatement = CONCAT('RENAME TABLE wp_', @blogID, '_termmeta TO wp_termmeta;');
+PREPARE renameTablesStatement FROM @renameTablesStatement;
+EXECUTE renameTablesStatement;
+DEALLOCATE PREPARE renameTablesStatement;
+
 SET @renameTablesStatement = CONCAT('RENAME TABLE wp_', @blogID, '_terms TO wp_terms;');
 PREPARE renameTablesStatement FROM @renameTablesStatement;
 EXECUTE renameTablesStatement;
