@@ -41,8 +41,8 @@ You're doing this on WPEngine.
 	8. In the menus, Database > Refresh tables
 	9. Does everything look like a single-site instance? Everything runs with honor? Good!
 7. Fix the wp_usermeta permissions site ID
-	1. search for `%wp_% keys`, sort by key column, delete all rows that don't match your site #
-	2. then update all the `wp_#` for your site to just `wp_`: ```UPDATE `wp_usermeta` SET `meta_key` = REPLACE(`meta_key`, 'wp_23_', 'wp_') WHERE `meta_key` LIKE '%wp_23_%'```, replacing `23` with the old site ID
+	1. search for `%wp_% keys`, sort by key column, delete all rows that don't match your site #: ```DELETE from wp_usermeta where meta_key LIKE 'wp\_%' and meta_key NOT LIKE 'wp\_##%'```, replacing `##` with the old site ID
+	2. then update all the `wp_#` for your site to just `wp_`: ```UPDATE `wp_usermeta` SET `meta_key` = REPLACE(`meta_key`, 'wp_##_', 'wp_') WHERE `meta_key` LIKE '%wp_##_%'```, replacing `##` with the old site ID
 7. Perform whatever other additional find-and-replaces need to be done
 	- for example:
 		- replace `largo-dev` with `largo`
