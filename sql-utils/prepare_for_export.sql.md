@@ -40,6 +40,9 @@ You're doing this on WPEngine.
 	7. Run all lines (Mac: Command-r)
 	8. In the menus, Database > Refresh tables
 	9. Does everything look like a single-site instance? Everything runs with honor? Good!
+7. Fix the wp_usermeta permissions site ID
+	1. search for `%wp_% keys`, sort by key column, delete all rows that don't match your site #
+	2. then update all the `wp_#` for your site to just `wp_`
 7. Perform whatever other additional find-and-replaces need to be done
 	- for example:
 		- replace `largo-dev` with `largo`
