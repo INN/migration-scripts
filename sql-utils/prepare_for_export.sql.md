@@ -48,7 +48,7 @@ You're doing this on WPEngine.
 		- replace `largo-dev` with `largo`
 		- replace `example.org/files/` with `example.org/wp-content/uploads` in all tables, including guids
 		- replace `example.wpengine.com` with `example.org`
-		- change the uploads directory in `wp_options` from something like `files` to `wp-content/uploads`
+		- in `wp_options`, change the value of `upload_path` from something like `wp-content/blogs.dir/##/files` to `wp-content/uploads`
 8. Export the database.
 	1. `fab vagrant.dump_db:/tmp/migration.sql,migration`
 9. Create a new WPEngine install for the new site
