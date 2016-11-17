@@ -87,3 +87,7 @@ delete wp_usermeta from wp_usermeta
   left outer join blog_user_ids
   on wp_usermeta.user_id = blog_user_ids.user_id
   where blog_user_ids.user_id is null;
+
+-- this needs to have `##` replaced, and should probably be using the statement syntax from above so we can use @blogID
+DELETE from wp_usermeta where meta_key LIKE 'wp\_%' and meta_key NOT LIKE 'wp\_##%';
+UPDATE `wp_usermeta` SET `meta_key` = REPLACE(`meta_key`, 'wp_##_', 'wp_') WHERE `meta_key` LIKE '%wp_##_%';
