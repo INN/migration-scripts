@@ -50,7 +50,7 @@ You're doing this on WPEngine.
 		- replace `example.org/files/` with `example.org/wp-content/uploads` in all tables, including guids
 		- replace `example.wpengine.com` with `example.org`
 		- in `wp_options`, change the value of `upload_path` from something like `wp-content/blogs.dir/##/files` to `wp-content/uploads`
-		- search for the old site ID in the `wp_options` table's meta_keys, to look for things that aren't `wp_##_`
+		- search for the old site ID in the `wp_options` table's `option_name`s, to look for things that aren't `wp_##_`
 8. Export the database.
 	1. `fab vagrant.dump_db:/tmp/migration.sql,migration`
 9. Create a new WPEngine install for the new site
