@@ -43,12 +43,14 @@ You're doing this on WPEngine.
 7. Fix the wp_usermeta permissions site ID
 	1. search for `%wp_% keys`, sort by key column, delete all rows that don't match your site #: ```DELETE from wp_usermeta where meta_key LIKE 'wp\_%' and meta_key NOT LIKE 'wp\_##%'```, replacing `##` with the old site ID
 	2. then update all the `wp_#` for your site to just `wp_`: ```UPDATE `wp_usermeta` SET `meta_key` = REPLACE(`meta_key`, 'wp_##_', 'wp_') WHERE `meta_key` LIKE '%wp_##_%'```, replacing `##` with the old site ID
+	3. (This can be done with the lines at the end of https://github.com/INN/migration-scripts/pull/18/files)
 7. Perform whatever other additional find-and-replaces need to be done
 	- for example:
 		- replace `largo-dev` with `largo`
 		- replace `example.org/files/` with `example.org/wp-content/uploads` in all tables, including guids
 		- replace `example.wpengine.com` with `example.org`
 		- in `wp_options`, change the value of `upload_path` from something like `wp-content/blogs.dir/##/files` to `wp-content/uploads`
+		- search for the old site ID in the `wp_options` table's meta_keys, to look for things that aren't `wp_##_`
 8. Export the database.
 	1. `fab vagrant.dump_db:/tmp/migration.sql,migration`
 9. Create a new WPEngine install for the new site
