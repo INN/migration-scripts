@@ -66,6 +66,34 @@ You're doing this on WPEngine.
 
 You may need to edit links in stories and in theme options to make sure that images display correctly.
 
+## Ephemera
+
 You may also be interested in:
 
 - https://github.com/INN/docs/blob/master/projects/largo/make-site-live.md
+
+If you are changing the name/directory of a child theme of Largo:
+
+- in the wp_options table, find the option_key 'optionsframework`, change `oldchild` to `new` and adjust the length of that string in the serialized data (if you aren't sure how to do this, ask?)
+- in the wp_options table, for every option_key like `oldchild` or `oldchild_0.5.3` or `theme_mods_oldchild`, change the option_key `oldchild` to `new` in order to copy over the theme options and the sidebars.
+- in the wp_options table, find the option_key `stylesheet` and change that to the new child theme
+- in the wp_options table, find the option_key `template` and make sure that that is correct
+
+If you need a multisite version of this script, check out https://gist.github.com/benlk/0cc5a0b22d154b85527308494b467217 and read its notes thoroughly
+
+- You're also going to need to figure out how to handle uploads; the default wordpress setup now appears to be the wp_option option_key `upload_path` should be `wp-content/uploads` in the main site and all other sites in the instance, and then your wp-content/uploads will look like this, with site id 1's uploads in the main folder and site id `##` in wp-content/uploads/sites/##/:
+	
+	```
+	/2012/
+	/2013/
+	/2014/
+	/2015/
+	/2015/
+	/sites/
+		/##/
+			/2014/
+			/2015/
+			/2016/
+	```
+
+Multisite installs will need https://wordpress.org/plugins/wordpress-mu-domain-mapping/ if the secondary sites are mapped and not subdomains of the main site. WPEngine provides their own version of this; if you put it in the mu-plugins/ directory before enabling multisite on a site you _will_ get a redirect loop
